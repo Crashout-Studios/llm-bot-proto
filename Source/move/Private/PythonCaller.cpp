@@ -25,19 +25,24 @@ FString APythonCaller::CallPythonFunction(const FString& Input)
     // Initialize the Python interpreter
     Py_Initialize();
 
+    // Get the path to the project's Source folder
+    FString SourceDir = FPaths::ProjectDir() / TEXT("Source/move/");
+    FString PythonScriptPath = SourceDir / TEXT("llmcallcode.py");
+
     // Convert FString to std::string
-    std::string InputStr = TCHAR_TO_UTF8(*Input);
+    std::string PythonScriptPathStr = TCHAR_TO_UTF8(*PythonScriptPath);
 
     // Python code to call the function
     const char* PythonCode = R"(
 import sys
-sys.path.append((r"C:\Users\jonat\OneDrive\Dokument\pvk")  # Add the path to your Python script
+sys.path.append('{}')  // Add the path to your Python script
 from llmcallcode import get_ai_response
+
 response = get_ai_response('{}')
 )";
 
-    // Format the Python code with the input
-    std::string FormattedCode = std::vformat(PythonCode, std::make_format_args(InputStr));
+    // Format the Python code with the input and script path
+    std::string FormattedCode = std::vformat(PythonCode, std::make_format_args(PythonScriptPathStr, TCHAR_TO_UTF8(*Input)));
 
     // Execute the Python code
     PyRun_SimpleString(FormattedCode.c_str());

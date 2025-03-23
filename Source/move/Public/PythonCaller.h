@@ -5,7 +5,7 @@
 #include "PythonCaller.generated.h"
 
 UCLASS()
-class YOURPROJECTNAME_API APythonCaller : public AActor
+class MOVE_API APythonCaller : public AActor
 {
     GENERATED_BODY()
 
