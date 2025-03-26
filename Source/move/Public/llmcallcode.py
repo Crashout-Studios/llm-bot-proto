@@ -2,7 +2,7 @@ from openai import OpenAI
 from pydantic import BaseModel
 
 base_url = "https://api.aimlapi.com/v1"
-api_key = "e48699b409d04189b63d1148769d24dc"
+api_key = "api-nyckel"
 system_prompt = "Translate necessary parameters for the functions and return in given format., functions to move is moveTo with x,y,z coords"
 
 api = OpenAI(api_key=api_key, base_url=base_url)
