@@ -1,14 +1,22 @@
 from openai import OpenAI
 from pydantic import BaseModel
+from typing import List, Dict, Union
 
 base_url = "https://api.aimlapi.com/v1"
-api_key = "api-nyckel"
-system_prompt = "Translate necessary parameters for the functions and return in given format., functions to move is moveTo with x,y,z coords"
+api_key = "490a10992e3547a8a1b254336f62c229"
+system_prompt = '''Translate necessary parameters for the functions and return in given format.,  
+the move to location function is called move with parameters x,y,z,"
+to make the character jump, jump har inga parametrar.
+'''
 
 api = OpenAI(api_key=api_key, base_url=base_url)
 
-class jsonFormat(BaseModel):
-    Location: list[float]
+class Action(BaseModel):
+    name: str
+    parameters: List[Union[str, float, int, List[float]]]  # Lista med olika typer av parametrar
+
+class JsonFormat(BaseModel):
+    actions: List[Action]
 
 def get_ai_response(user_input: str) -> str:
     """Tar in en användarinput och returnerar svaret från OpenAI."""
@@ -18,7 +26,7 @@ def get_ai_response(user_input: str) -> str:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_input}
         ],
-        response_format=jsonFormat,
+        response_format=JsonFormat,
     )
     return completion.choices[0].message.content
 
