@@ -12,3 +12,5 @@ Saved
 *.suo
 *.xcodeproj
 *.xcworkspace
+*.env
+__pycache__
